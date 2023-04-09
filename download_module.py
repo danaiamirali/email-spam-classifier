@@ -2,6 +2,8 @@ import pathlib
 import urllib.request
 import os
 import tarfile
+import zipfile
+
 
 class DataDownloader:
     """
@@ -31,7 +33,7 @@ class DataDownloader:
     def __str__(self):
         print("URL: ", self.url)
         print("File names: ", self.file_names)
-    
+
     # Helper function to make local directory to store the data
     # Returns created path
     def mkdir(self, path):
@@ -57,8 +59,10 @@ class DataDownloader:
 
             tars = ["tar", "tgz", "bz2", "gz", "xz"]
             if extension == "zip":
-                # TODO: Implement zip file extraction
-                pass
+                with zipfile.ZipFile(file_path, 'r') as myzip:
+                    zipfile.ZipFile.extractall(myzip, path=file_dir)
+                if not keep_zip:
+                    os.remove(file_path)
             elif extension in tars:
                 tarfile.open(file_path, 'r').extractall(path=file_dir)
                 if not keep_zip:
