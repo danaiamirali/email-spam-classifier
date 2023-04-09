@@ -1,4 +1,3 @@
-import pathlib
 import urllib.request
 import os
 import tarfile
@@ -26,6 +25,7 @@ class DataDownloader:
                 self.file_names = [file_name]
             else:
                 self.file_names = file_name
+        # All files
         else:
             self.file_names = self.file_names_from_url()
             
@@ -43,6 +43,7 @@ class DataDownloader:
             os.mkdir(path)
         return path
     
+    # Helper function to get file names from URL
     def file_names_from_url(self):
         # Get the file names from the URL
         file_names = []
