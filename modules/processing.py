@@ -44,16 +44,18 @@ class Process:
     
     @prettyprint
     @staticmethod
-    def lem_words(self, text):
+    def lem_words(text, nlp = None):
         """
         effects: lemmatizes words in given string
         text: string
         """
-        # tokens = word_tokenize(text)
-        # lemmatizer = WordNetLemmatizer()
-        # lemmatized_sentence = [lemmatizer.lemmatize(w) for w in tokens]
-        nlp = spacy.load('en_core_web_sm')
-        lemmatized_sentence = [token.lemma_ for doc in self.nlp.pipe(text) for token in doc]
+        if nlp is None:
+            tokens = word_tokenize(text)
+            lemmatizer = WordNetLemmatizer()
+            lemmatized_sentence = [lemmatizer.lemmatize(w) for w in tokens]
+        else:
+            doc = nlp(text)
+            lemmatized_sentence = [token.lemma_ for token in doc]
 
         return ' '.join(lemmatized_sentence)
 
