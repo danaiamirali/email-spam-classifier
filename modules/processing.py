@@ -3,7 +3,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem.snowball import SnowballStemmer
 from nltk.stem import WordNetLemmatizer
 import string
-import spacy
+import re
 
 class Process:
     """
@@ -44,26 +44,60 @@ class Process:
     
     @prettyprint
     @staticmethod
-    def lem_words(text, nlp = None):
+    def lem_words(text):
         """
         effects: lemmatizes words in given string
         text: string
         """
-        if nlp is None:
-            tokens = word_tokenize(text)
-            lemmatizer = WordNetLemmatizer()
-            lemmatized_sentence = [lemmatizer.lemmatize(w) for w in tokens]
-        else:
-            doc = nlp(text)
-            lemmatized_sentence = [token.lemma_ for token in doc]
+        tokens = word_tokenize(text)
+        lemmatizer = WordNetLemmatizer()
+        lemmatized_sentence = [lemmatizer.lemmatize(w) for w in tokens]
 
         return ' '.join(lemmatized_sentence)
 
-    @prettyprint
     @staticmethod
-    def remove_punctuation(text):
+    def clean_punctuation(text):
         """
         effects: removes punctuation from given string
         text: string
         """
         return ''.join([c for c in text if c not in string.punctuation])
+    
+
+    """
+    Regex string manipulation functions
+    """
+
+    @staticmethod
+    def clean_whitespace(text):
+        """"
+        effects: substitutes multiple whitespaces with singular space 
+        text: string
+        """
+        return re.sub("\s+", " ", text)
+
+    @staticmethod
+    def clean_integers(text):
+        """
+        effects: substitutes integers with pound sign
+        text: string
+        """
+        return re.sub("\d+", "#", text)
+    
+    @staticmethod
+    def clean_html(text):
+        return re.sub("<.*?>", "HTML_TEXT", text)
+    
+    @staticmethod
+    def clean_urls(text):
+        return re.sub("http\S+", "URL", text)
+    
+    @staticmethod
+    def clean_emails(text):
+        return re.sub("\S+@\S+", "EMAIL", text)
+    
+    @prettyprint
+    @staticmethod
+    def clean_everything(text):
+        split = Process.clean_whitespace(Process.clean_urls(Process.clean_emails(text)))
+        return Process.clean_punctuation(Process.clean_integers(Process.clean_html(split)))
