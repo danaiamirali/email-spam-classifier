@@ -15,7 +15,7 @@ class Process:
             return func(*args, **kwargs)
         return wrapper
 
-    @prettyprint
+    # @prettyprint
     @staticmethod
     def stop_word_removal(text):
         """
@@ -29,7 +29,7 @@ class Process:
         filtered_sentence = [w for w in tokens if not w.lower() in stop_words]
         return ' '.join(filtered_sentence)
 
-    @prettyprint
+    # @prettyprint
     @staticmethod
     def stem_words(text):
         """
@@ -42,7 +42,7 @@ class Process:
 
         return ' '.join(stemmed_sentence)
     
-    @prettyprint
+    # @prettyprint
     @staticmethod
     def lem_words(text):
         """
@@ -61,7 +61,16 @@ class Process:
         effects: removes punctuation from given string
         text: string
         """
-        return ''.join([c for c in text if c not in string.punctuation])
+        custom_punctuation = string.punctuation.replace("#", "")
+        return ''.join([c for c in text if c not in custom_punctuation])
+    
+    @staticmethod
+    def lower_case(text):
+        """
+        effects: converts text to lowercase
+        text: string
+        """
+        return text.lower()
     
 
     """
@@ -96,7 +105,7 @@ class Process:
     def clean_emails(text):
         return re.sub("\S+@\S+", "EMAIL", text)
     
-    @prettyprint
+    # @prettyprint
     @staticmethod
     def clean_everything(text):
         split = Process.clean_whitespace(Process.clean_urls(Process.clean_emails(text)))
