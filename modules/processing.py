@@ -119,7 +119,7 @@ class Process:
     """
     main function that runs all (default stack) preprocessing functions
     """
-    @prettyprint
+    # @prettyprint
     @staticmethod
     def all(text):
         return Process.lower_case(Process.lem_words(Process.stop_word_removal(Process.clean_everything(text))))
