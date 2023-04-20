@@ -10,7 +10,12 @@ class Process:
     Static class to handle preprocessing of data
     """
     def prettyprint(func):
+        """"
+        function wrapper to print function name before execution
+        """
         def wrapper(*args, **kwargs):
+            if (func.__name__ == "all"):
+                print("Lemmatizing, removing stop words, and cleaning text...")
             print(f"Processing {func.__name__}...")
             return func(*args, **kwargs)
         return wrapper
@@ -110,3 +115,11 @@ class Process:
     def clean_everything(text):
         split = Process.clean_whitespace(Process.clean_urls(Process.clean_emails(text)))
         return Process.clean_punctuation(Process.clean_integers(Process.clean_html(split)))
+    
+    """
+    main function that runs all (default stack) preprocessing functions
+    """
+    @prettyprint
+    @staticmethod
+    def all(text):
+        return Process.lem_words(Process.stop_word_removal(Process.clean_everything(text)))

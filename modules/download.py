@@ -12,11 +12,14 @@ class DataDownloader:
     target_dir: Prespecificed directory to download data to
     """
     target_dir = "datasets/"
-
-    # Overloaded constructor for two cases:
-    # 1. Downloading specified file(s) from URL
-    # 2. Downloading all files from URL
+    
     def __init__(self, url, file_name=None):
+        """
+        constructor that handles initialization by taking in URL and file name(s)
+        and fetching the file names from the URL if no file name is specified.
+        url: string 
+        file_name: string or vector of strings or None
+        """
         print("Ctor called")
         self.url = url
         # Specified files
@@ -31,21 +34,29 @@ class DataDownloader:
             
 
     def __str__(self):
+        """
+        object to string method for debugging or convenience purposes
+        """
         print("URL: ", self.url)
         print("File names: ", self.file_names)
 
-    # Helper function to make local directory to store the data
-    # Returns created path
     def mkdir(self, path):
+        """
+        helper function to make local directory to store data
+        returns created path
+        path: string
+        """
         # Make a directory
         path = os.path.join(self.target_dir, path)
         if not os.path.exists(path):
             os.mkdir(path)
         return path
     
-    # Helper function to get file names from URL
     def file_names_from_url(self):
-        # Get the file names from the URL
+        """
+        helper function to get file names from URL
+        returns vector of file names
+        """
         file_names = []
         with urllib.request.urlopen(self.url) as response:
             for line in response:
@@ -54,8 +65,12 @@ class DataDownloader:
                     file_names.append(decoded_line.split('"')[1])
         return file_names
 
-    # Downloads data
     def download(self, keep_zip=False):
+        """
+        downloads data from URL to local directory
+        keeps zip files or deletes based on user specification
+        keep_zip: boolean
+        """
         for file in self.file_names:
             # Local Path to store the data
             file_dir = self.mkdir(file)
