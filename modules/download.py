@@ -20,7 +20,9 @@ class DataDownloader:
         url: string 
         file_name: string or vector of strings or None
         """
-        print("Ctor called")
+        if not os.path.exists(self.target_dir):
+            os.mkdir(self.target_dir)
+
         self.url = url
         # Specified files
         if file_name is not None:
@@ -32,7 +34,6 @@ class DataDownloader:
         else:
             self.file_names = self.file_names_from_url()
             
-
     def __str__(self):
         """
         object to string method for debugging or convenience purposes
