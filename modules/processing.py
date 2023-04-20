@@ -122,4 +122,4 @@ class Process:
     @prettyprint
     @staticmethod
     def all(text):
-        return Process.lem_words(Process.stop_word_removal(Process.clean_everything(text)))
+        return Process.lower_case(Process.lem_words(Process.stop_word_removal(Process.clean_everything(text))))
